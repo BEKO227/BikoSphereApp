@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@source "../node_modules/flowbite-datepicker";
+.active{
+    @apply text-blue-700;
+}
