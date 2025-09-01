@@ -12,6 +12,9 @@ import EditProfile from './Pages/EditProfile/EditProfile.jsx';
 import Profile from './Pages/Profile/Profile.jsx';
 import { ProtectedRouting } from './ProtectedRouting/ProtectedRouting.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'flowbite';
+import 'flowbite-react';
+import'react-icons';
 
 
 

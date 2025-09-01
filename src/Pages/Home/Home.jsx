@@ -9,8 +9,6 @@ import PostOptions from './../../Components/PostOptions/PostOptions';
 export default function Home() {
   let [postsList , setPostsList] = useState([])
   let [loading, setLoading] = useState(true);
-
-  // store selected image for modal
   let [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(()=>{
@@ -47,7 +45,7 @@ export default function Home() {
           return (
             <div 
               key={_id} 
-              className="my-4 w-3/4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm 
+              className="my-4 w-full bg-white dark:bg-gray-900 rounded-2xl shadow-sm 
                          border border-gray-100 dark:border-gray-800 overflow-hidden mx-auto"
             >
               <div className="flex flex-col sm:flex-row items-start gap-4 p-4">
