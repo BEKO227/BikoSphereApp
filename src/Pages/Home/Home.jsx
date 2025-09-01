@@ -4,167 +4,138 @@ import { Link } from 'react-router-dom'
 import default_avatar from '../../../src/assets/default-profile.png'
 import notFoundImg from '../../../src/assets/Image_not_available.png'
 import CreatePost from '../../Components/CreatePost/CreatePost'
-
-
+import PostOptions from './../../Components/PostOptions/PostOptions';
 
 export default function Home() {
-let [postsList , setPostsList]= useState([])
-let [loading, setLoading] = useState(true);
+  let [postsList , setPostsList] = useState([])
+  let [loading, setLoading] = useState(true);
 
-useEffect(()=>{
-  getAllPosts()
-},[])
+  // store selected image for modal
+  let [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(()=>{
+    getAllPosts()
+  },[])
+
   async function getAllPosts(){
     setLoading(true);
-    let {data} = await axios.get(`https://linked-posts.routemisr.com/posts?limit=50&sort=-createdAt`,
-      {
-        headers:{
-          token : localStorage.getItem('token')
-        }
-      }
+    let {data} = await axios.get(
+      `https://linked-posts.routemisr.com/posts?limit=50&sort=-createdAt`,
+      { headers:{ token : localStorage.getItem('token') } }
     )
-    console.log(data)
-    if (data.message == 'success'){
+    if (data.message === 'success'){
       setPostsList(data.posts)
       setLoading(false);
     }
-     
   }
 
   return (
-    <div className='mx-auto w-3/4 my-5'>
-      <div className="my-5 max-w-3/4  mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <CreatePost/>
-
+    <div className="w-full max-w-5xl mx-auto px-3 sm:px-5 my-5">
+      {/* Create post */}
+      <div className="my-5 w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <CreatePost/>
       </div>
-      <div className="container">
+  
+      {/* Posts list */}
+      <div>
         { loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      ) : postsList.map((post)=>{
-          let {_id , body , image , user : {name, photo}, createdAt , comments } = post
-          return   <div key={_id} className="my-5 max-w-3/4 max-h-3/4 mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
-          <div className="flex items-start w-full mx-auto gap-4 p-4">
-            {/* Avatar */}
-            <img
-              src={photo}
-              alt="Author avatar"
-              className="w-12 h-12 rounded-full object-cover"
-            />
-
-            <div className="flex-1">
-              {/* Header */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {name}
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(createdAt).toDateString()}
-                    <br />
-                    {new Date(createdAt).toLocaleTimeString()}
-
-                  </p>
-                </div>
-                <button
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 rounded"
-                  title="More options"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 12h.01M12 12h.01M18 12h.01"
-                    />
-                  </svg>
-                </button>
-              </div>
-        
-              {/* Post text */}
-              <p className="mt-3 text-gray-800 dark:text-gray-200 leading-relaxed">
-                {body}
-              </p>
-        
-              {/* Post image */}
-              <div className="mt-4">
-              <img
-                src={image || notFoundImg}
-                onError={(e) => (e.target.src = notFoundImg)}
-                alt="Post media"
-                className="w-full max-h-[420px] object-cover rounded-xl border border-gray-100 dark:border-gray-800"
-              />
-              </div>
-        
-              {/* Actions */}
-              <div className="mt-4 flex justify-between gap-4 text-sm text-gray-600 dark:text-gray-300">
-                <button className="flex items-center gap-2 px-3 py-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
-                  💬 <span>{comments.length}</span>
-                </button>
-                <Link  to={'/PostDetails/'+ _id} type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">See post Details</Link>
-              </div>
-        
-              {/* Comment box */}
-              <div className="mt-4 flex gap-2 items-start">
-                <input
-                  className="flex-1 px-3 py-2 rounded-lg border text-white border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  placeholder="Write a comment..."
-                />
-                <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                  Post
-                </button>
-              </div>
-        
-              {/* Comments list */}
-              <ul className="mt-3 space-y-3">
-                <li className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-start gap-3">
-                  <img
-                      src={
-                        comments?.length > 0
-                          ? comments[comments.length - 1]?.commentCreator?.photo || default_avatar
-                          : default_avatar
-                      }
-                      onError={(e) => (e.target.src = default_avatar)}
-                      alt="Author avatar"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div className="flex-1 text-sm">
-                      <div className="flex items-center justify-between">
-                        <strong className="text-gray-900 dark:text-gray-100">{comments?.length > 0
-                          ? comments[comments.length - 1]?.commentCreator?.name || "Unknown"
-                          : "No comments yet"}</strong>
-                        <span className="text-xs text-gray-400">
-                        {comments?.length > 0
-                          ? new Date(comments[comments.length - 1]?.createdAt).toDateString()
-                          : ""}
-                        <br />
-                        {comments?.length > 0
-                          ? new Date(comments[comments.length - 1]?.createdAt).toLocaleTimeString()
-                          : ""}</span>
-                      </div>
-                      <p className="mt-1 text-gray-700 dark:text-gray-200">
-                        {comments?.length > 0
-                        ? comments[comments.length - 1]?.content || "No content"
-                        : "No comments yet"}
-                        </p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+          <div className="flex justify-center items-center h-60">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
-        </div>
-        
+        ) : postsList.map((post) => {
+          let {_id, body, image, user: {name, photo}, createdAt, comments} = post
+          return (
+            <div 
+              key={_id} 
+              className="my-4 w-3/4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm 
+                         border border-gray-100 dark:border-gray-800 overflow-hidden mx-auto"
+            >
+              <div className="flex flex-col sm:flex-row items-start gap-4 p-4">
+                
+                {/* Avatar */}
+                <img
+                  src={photo}
+                  alt="Author avatar"
+                  className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                />
+  
+                <div className="flex-1 w-full">
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{name}</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {new Date(createdAt).toDateString()} <br className="sm:hidden" />
+                        {new Date(createdAt).toLocaleTimeString()}
+                      </p>
+                    </div>
+                    <PostOptions/>
+                  </div>
+  
+                  {/* Post text */}
+                  <p className="mt-3 text-gray-800 dark:text-gray-200 leading-relaxed text-sm sm:text-base">
+                    {body}
+                  </p>
+  
+                  {/* Post image */}
+                  {image && (
+                    <div className="mt-3">
+                      <img
+                        src={image || notFoundImg}
+                        onError={(e) => (e.target.src = notFoundImg)}
+                        alt="Post media"
+                        className="mx-auto w-fit max-h-[320px] sm:max-h-[420px] object-contain rounded-xl border 
+                                   border-gray-100 dark:border-gray-800 cursor-pointer"
+                        onClick={() => setSelectedImage(image)}
+                      />
+                    </div>
+                  )}
+  
+                  {/* Actions */}
+                  <div className="mt-4 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 text-sm text-gray-600 dark:text-gray-300">
+                    <button className="flex items-center gap-2 px-3 py-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                      💬 <span>{comments.length}</span>
+                    </button>
+                    <Link  
+                      to={'/PostDetails/'+ _id} 
+                      className="text-center w-full sm:w-auto text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
+                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                                 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                      See post Details
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
         })}
       </div>
+  
+      {/* Image Modal (already responsive) */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+             onClick={() => setSelectedImage(null)}>
+          <div 
+            className="relative w-full max-w-3xl p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full w-10 h-10 
+                         flex items-center justify-center text-xl hover:bg-opacity-70"
+              onClick={() => setSelectedImage(null)}
+            >
+              ×
+            </button>
+            <img
+              src={selectedImage}
+              onError={(e) => (e.target.src = notFoundImg)}
+              alt="Post media"
+              className="w-full max-h-[80vh] object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
+  
 }
