@@ -17,8 +17,6 @@ export default function PostOptions() {
     >
       <Dropdown.Item>Update Post</Dropdown.Item>
       <Dropdown.Item>Delete Post</Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item>Separated link</Dropdown.Item>
     </Dropdown>
   );
 }
