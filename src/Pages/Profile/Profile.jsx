@@ -80,7 +80,7 @@ useEffect(()=>{
                         {new Date(createdAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    <PostOptions/>
+                    <PostOptions Post_id={_id} />
                   </div>
   
                   {/* Post text */}
