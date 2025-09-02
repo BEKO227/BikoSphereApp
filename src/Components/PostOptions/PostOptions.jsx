@@ -1,12 +1,30 @@
 import React, { use } from 'react'
 import { initFlowbite } from 'flowbite'
 import { useEffect } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function PostOptions({Post_id}) {
     useEffect(() => {
         initFlowbite();
-        console.log(Post_id);
     }, []);
+    async function handleDelete(){
+        let {data} = await axios.delete(`https://linked-posts.routemisr.com/posts/${Post_id}`,
+        {
+            headers:{
+                token : localStorage.getItem('token')
+            }
+        })
+        console.log(data)
+        if (data.message == "success"){
+            toast.success('Post Deleted Successfully')
+            setTimeout(() => { 
+                window.location.reload();
+            }, 2000);
+        }else{
+            toast.error(data.message)
+        }
+    }
   return (
     <div>
       <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle={"dropdown"+Post_id} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 rounded"
@@ -21,8 +39,8 @@ export default function PostOptions({Post_id}) {
             <li>
                 <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"> <i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit Post</a>
             </li>
-            <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"> <i class="fa-solid fa-trash text-red-600"></i> Delete Post</a>
+            <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleDelete}>
+                 <i class="fa-solid fa-trash text-red-600"></i> Delete Post
             </li>
             </ul>
         </div>
