@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import default_avatar from "../../../src/assets/default-profile.png";
 import notFoundImg from "../../../src/assets/Image_not_available.png";
-import PostOptions from "../../Components/PostOptions/PostOptions"; // ✅ don’t forget this
+import PostOptions from "../../Components/PostOptions/PostOptions";
 
 export default function PostDetails() {
   const { id } = useParams();

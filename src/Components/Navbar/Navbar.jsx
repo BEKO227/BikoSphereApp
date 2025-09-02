@@ -14,12 +14,14 @@ export default function Navbar(props) {
   let navg = useNavigate()
 
   let {user, setUser } = useContext(UserContext)
-console.log(user)
+  console.log(user)
 
  function Logout() {
     localStorage.removeItem('token'); 
     setUser(null);
     navg('/Login');
+    window.location.reload();
+
 
  }
 

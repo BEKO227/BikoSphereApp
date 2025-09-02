@@ -36,7 +36,8 @@ export default function Login() {
             localStorage.setItem('token',response.data.token)
             toast.success('successfully loggedin') 
             getUserData(); 
-            navg('/')
+            navg('/');
+            window.location.reload();
         }
     }
   return (

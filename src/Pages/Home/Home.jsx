@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="w-full max-w-5xl mx-auto px-3 sm:px-5 my-5">
       {/* Create post */}
-      <div className="my-5 w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="my-5 w-3/4 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mx-auto">
         <CreatePost/>
       </div>
   
@@ -45,7 +45,7 @@ export default function Home() {
           return (
             <div 
               key={_id} 
-              className="my-4 w-full bg-white dark:bg-gray-900 rounded-2xl shadow-sm 
+              className="my-4 w-3/4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm 
                          border border-gray-100 dark:border-gray-800 overflow-hidden mx-auto"
             >
               <div className="flex flex-col sm:flex-row items-start gap-4 p-4">
@@ -67,7 +67,7 @@ export default function Home() {
                         {new Date(createdAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    <PostOptions/>
+                    <PostOptions Post_id={_id} />
                   </div>
   
                   {/* Post text */}
