@@ -37,7 +37,6 @@ export default function Login() {
             toast.success('successfully loggedin') 
             getUserData(); 
             navg('/');
-            window.location.reload();
         }
     }
   return (
