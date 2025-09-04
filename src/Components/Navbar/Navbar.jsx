@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import Logo from './../../assets/logo_bg_removed.png';
 import './Navbar.css';    
 import { UserContext } from './../../Context/UserContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { initFlowbite } from 'flowbite';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 
 
+
 export default function Navbar(props) {
+      useEffect(() => {
+          initFlowbite();
+      }, []);
+
   let navg = useNavigate()
 
   let {user, setUser } = useContext(UserContext)
@@ -43,24 +49,34 @@ export default function Navbar(props) {
 
       {
       user ? <>
-      
+      <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" type="button">
+        <span className="sr-only">Open user menu</span>
+        <img className="w-8 h-8 rounded-full" src={user?.photo} alt="user photo"/>
+        </button>
 
-      <div className="flex items-center gap-4">
-    <img className="w-10 h-10 rounded-full" src={user.photo} alt=""/>
-    <NavLink to="/Profile" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"  aria-current="page">
-    {user.name}
-   </NavLink>
-    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <NavLink to="/EditProfile" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Edit profile</NavLink>
-        </li>
-        <li>  
-          <NavLink onClick={Logout} className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
-          <FontAwesomeIcon icon={faRightFromBracket} className="text-white" />
-          </NavLink>
-        </li>
-      </ul> 
-    </div>
+        <div id="dropdownAvatar" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div>{user?.name}</div>
+              <div className="font-medium truncate">{user?.email}</div>
+            </div>
+            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+              <li>
+              <NavLink to="/Profile" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"  aria-current="page">
+              My Profile
+              </NavLink>
+                 </li>
+              <li>
+              <NavLink to="/EditProfile" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" aria-current="page">Edit profile</NavLink>
+              </li>
+            </ul>
+            <div className="py-2">
+                <div onClick={Logout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+                  <FontAwesomeIcon icon={faRightFromBracket} className="me-2" />
+                  Sign out
+                </div>
+            </div>
+</div>
+
       </> :
 
       <>

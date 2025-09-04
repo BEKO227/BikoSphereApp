@@ -1,15 +1,20 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import default_avatar from '../../../src/assets/default-profile.png'
 import notFoundImg from '../../../src/assets/Image_not_available.png'
 import CreatePost from '../../Components/CreatePost/CreatePost'
 import PostOptions from './../../Components/PostOptions/PostOptions';
+import { UserContext } from './../../Context/UserContext';
 
 export default function Home() {
   let [postsList , setPostsList] = useState([])
   let [loading, setLoading] = useState(true);
   let [selectedImage, setSelectedImage] = useState(null);
+  let [newComment, setNewComment] = useState({});
+  let {user} = useContext(UserContext)
+  
+
 
   useEffect(()=>{
     getAllPosts()
@@ -42,6 +47,8 @@ export default function Home() {
           </div>
         ) : postsList.map((post) => {
           let {_id, body, image, user: {name, photo}, createdAt, comments} = post
+          let userPostId = post.user._id
+          let currentUserId = user?._id
           return (
             <div 
               key={_id} 
@@ -67,7 +74,7 @@ export default function Home() {
                         {new Date(createdAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    <PostOptions Post_id={_id} />
+                    { userPostId === currentUserId && <PostOptions Post_id={_id}  className="w-full"/> }
                   </div>
   
                   {/* Post text */}
@@ -102,6 +109,69 @@ export default function Home() {
                       See post Details
                     </Link>
                   </div>
+                    {/* Comments section */}
+                    <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-3">
+                      {/* Last Comment */}
+                      {comments?.length > 0 ? (
+                        (() => {
+                          let lastComment = comments[comments.length - 1];
+                          return (
+                            <div className="flex items-start gap-3 mb-3">
+                              <img
+                                src={lastComment.commentCreator?.photo || default_avatar}
+                                onError={(e) => (e.target.src = default_avatar)}
+                                alt="Comment author"
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                              <div className="flex-1 text-sm bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-lg">
+                                <div className="flex items-center justify-between">
+                                  <strong className="text-gray-900 dark:text-gray-100">
+                                    {lastComment.commentCreator?.name || "Unknown"}
+                                  </strong>
+                                  <span className="text-xs text-gray-400">
+                                    {new Date(lastComment.createdAt).toLocaleString()}
+                                  </span>
+                                </div>
+                                <p className="mt-1 text-gray-700 dark:text-gray-200">
+                                  {lastComment.content || "No content"}
+                                </p>
+                              </div>
+                            </div>
+                          )
+                        })()
+                      ) : (
+                        <p className="p-3 text-center text-gray-500 dark:text-gray-400">
+                          No comments yet
+                        </p>
+                      )}
+
+                      {/* Add Comment */}
+                      <div className="flex items-center gap-3 mt-3">
+                        <img
+                          src={user?.photo || default_avatar}
+                          alt="Your avatar"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          className="flex-1 px-4 py-2 text-sm rounded-full border border-gray-300 
+                                    dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:outline-none"
+                          value={newComment[_id] || ""}
+                          onChange={(e) =>
+                            setNewComment({ ...newComment, [_id]: e.target.value })
+                          }
+                        />
+                        <button
+                          onClick={() => handleAddComment(_id)}
+                          className="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 
+                                    rounded-full focus:outline-none"
+                        >
+                          Post
+                        </button>
+                      </div>
+                    </div>
+
                 </div>
               </div>
             </div>
