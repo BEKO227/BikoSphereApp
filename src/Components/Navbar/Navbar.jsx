@@ -5,7 +5,6 @@ import './Navbar.css';
 import { UserContext } from './../../Context/UserContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { initFlowbite } from 'flowbite';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
