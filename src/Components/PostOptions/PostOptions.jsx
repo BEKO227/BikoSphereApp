@@ -5,12 +5,17 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 
-export default function PostOptions({Post_id}) {
+export default function PostOptions({Post_id, postBody , PostImage}) {
     useEffect(() => {
         initFlowbite(); 
     }, []);
     let fileInput = useRef()
-    let {handleSubmit , register} = useForm()
+    let {handleSubmit , register} = useForm({
+        defaultValues:{
+            body : postBody
+
+        }
+    })
     async function handleDelete(){
         let {data} = await axios.delete(`https://linked-posts.routemisr.com/posts/${Post_id}`,
         {
@@ -32,6 +37,7 @@ export default function PostOptions({Post_id}) {
         let formData = new FormData()
         formData.append('body', obj.body)
         formData.append('image', fileInput.current.files[0])
+        
         let {data} = await axios.put(`https://linked-posts.routemisr.com/posts/${Post_id}`,formData,
         {
             headers:{

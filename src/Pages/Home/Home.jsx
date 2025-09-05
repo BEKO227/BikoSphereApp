@@ -74,7 +74,7 @@ export default function Home() {
                         {new Date(createdAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    { userPostId === currentUserId && <PostOptions Post_id={_id}  className="w-full"/> }
+                    { userPostId === currentUserId && <PostOptions postBody={body} PostImage={image} Post_id={_id}  className="w-full"/> }
                   </div>
   
                   {/* Post text */}
@@ -179,7 +179,7 @@ export default function Home() {
         })}
       </div>
   
-      {/* Image Modal (already responsive) */}
+      {/* Image Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
              onClick={() => setSelectedImage(null)}>

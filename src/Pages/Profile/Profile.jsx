@@ -38,7 +38,7 @@ useEffect(()=>{
 
   return (
     <div className='w-full max-w-5xl mx-auto px-3 sm:px-5 my-5'>
-    <div className="flex items-center justify-center w-1/2 mx-auto mt-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-4">
+    <div className="flex items-center justify-center w-3/4 mx-auto mt-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 p-4">
         <div className="flex flex-col items-center">
             <img className="w-24 h-24 mb-3 rounded-full shadow-lg" src={user?.photo || "/default-avatar.png"} alt="User Image"/>
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user?.name}</h5>
@@ -80,7 +80,7 @@ useEffect(()=>{
                         {new Date(createdAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    <PostOptions Post_id={_id} />
+                    <PostOptions Post_id={_id} postBody={body} PostImage={image} />
                   </div>
   
                   {/* Post text */}
