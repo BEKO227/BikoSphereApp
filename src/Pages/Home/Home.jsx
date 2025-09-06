@@ -6,6 +6,7 @@ import notFoundImg from '../../../src/assets/Image_not_available.png'
 import CreatePost from '../../Components/CreatePost/CreatePost'
 import PostOptions from './../../Components/PostOptions/PostOptions';
 import { UserContext } from './../../Context/UserContext';
+import PostSkeleton from '../../Components/PostSkeleton'
 
 export default function Home() {
   let [postsList , setPostsList] = useState([])
@@ -42,9 +43,11 @@ export default function Home() {
       {/* Posts list */}
       <div>
         { loading ? (
-          <div className="flex justify-center items-center h-60">
-            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
+          <div>
+          {Array.from({ length: 3 }).map((_, idx) => (
+            <PostSkeleton key={idx} />
+          ))}
+        </div>
         ) : postsList.map((post) => {
           let {_id, body, image, user: {name, photo}, createdAt, comments} = post
           let userPostId = post.user._id
