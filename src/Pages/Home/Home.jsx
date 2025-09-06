@@ -7,12 +7,12 @@ import CreatePost from '../../Components/CreatePost/CreatePost'
 import PostOptions from './../../Components/PostOptions/PostOptions';
 import { UserContext } from './../../Context/UserContext';
 import PostSkeleton from '../../Components/PostSkeleton'
+import CreateComment from './../../Components/CreateComment';
 
 export default function Home() {
   let [postsList , setPostsList] = useState([])
   let [loading, setLoading] = useState(true);
   let [selectedImage, setSelectedImage] = useState(null);
-  let [newComment, setNewComment] = useState({});
   let {user} = useContext(UserContext)
   
 
@@ -121,7 +121,7 @@ export default function Home() {
                           return (
                             <div className="flex items-start gap-3 mb-3">
                               <img
-                                src={lastComment.commentCreator?.photo || default_avatar}
+                                src={lastComment.commentCreator?.photo}
                                 onError={(e) => (e.target.src = default_avatar)}
                                 alt="Comment author"
                                 className="w-10 h-10 rounded-full object-cover"
@@ -149,32 +149,8 @@ export default function Home() {
                       )}
 
                       {/* Add Comment */}
-                      <div className="flex items-center gap-3 mt-3">
-                        <img
-                          src={user?.photo || default_avatar}
-                          alt="Your avatar"
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Write a comment..."
-                          className="flex-1 px-4 py-2 text-sm rounded-full border border-gray-300 
-                                    dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 focus:outline-none"
-                          value={newComment[_id] || ""}
-                          onChange={(e) =>
-                            setNewComment({ ...newComment, [_id]: e.target.value })
-                          }
-                        />
-                        <button
-                          onClick={() => handleAddComment(_id)}
-                          className="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 
-                                    rounded-full focus:outline-none"
-                        >
-                          Post
-                        </button>
-                      </div>
+                      <CreateComment postId={_id} />
                     </div>
-
                 </div>
               </div>
             </div>

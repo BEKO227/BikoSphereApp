@@ -1,5 +1,4 @@
 import React, { use, useRef } from 'react'
-import { initFlowbite } from 'flowbite'
 import { useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';

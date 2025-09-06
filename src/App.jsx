@@ -14,12 +14,16 @@ import { ProtectedRouting } from './ProtectedRouting/ProtectedRouting.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'flowbite';
 import 'flowbite-react';
+import { initFlowbite } from 'flowbite';
 import'react-icons';
 
 
 
 export default function App() {
 
+  useEffect(() => {
+    initFlowbite(); 
+  }, []);
   let Routes = createBrowserRouter([
     {path: '/', element: <Layout />, children:[
       {index: true, element: <ProtectedRouting><Home/></ProtectedRouting>},
